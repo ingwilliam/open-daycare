@@ -168,3 +168,11 @@ export function EditIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function CheckIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} strokeWidth={3} {...props}>
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
