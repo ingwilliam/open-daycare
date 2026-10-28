@@ -4,7 +4,7 @@ import { SunIcon } from '@/components/shared/icons';
 // Se oculta en viewports menores a `md`; en mobile solo queda el formulario.
 export function BrandPanel() {
   return (
-    <div className="relative hidden flex-col justify-between overflow-hidden bg-[linear-gradient(155deg,#F6A98E_0%,#F2937A_45%,#EC7E62_100%)] p-14 text-white md:flex">
+    <div className="relative hidden flex-col justify-between overflow-hidden bg-[linear-gradient(155deg,#F6A98E_0%,#F2937A_45%,#EC7E62_100%)] px-[60px] py-14 text-white md:flex">
       <div
         aria-hidden="true"
         className="absolute -top-35 -right-30 size-105 rounded-full bg-white/12"
@@ -35,7 +35,7 @@ export function BrandPanel() {
         </p>
       </div>
 
-      <div className="relative text-sm text-white/90">Guardería Sala Soles</div>
+      <div className="relative text-sm text-white/90">🌿 Guardería Sala Soles</div>
     </div>
   );
 }
