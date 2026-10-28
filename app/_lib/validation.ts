@@ -13,6 +13,12 @@ export interface ActivateAccountFormValues {
   photoConsent: boolean;
 }
 
+export interface AddKidFormValues {
+  fullName: string;
+  birthDate: string; // yyyy-mm-dd (valor de <input type="date">)
+  room: string;
+}
+
 // Field name → message in Spanish. An empty object means the form is valid.
 export type FormErrors<T> = Partial<Record<keyof T, string>>;
 
@@ -82,6 +88,40 @@ export function validateActivateAccount(
 }
 
 /**
+ * Valida el formulario de alta de niño.
+ *
+ * Solo nombre, fecha de nacimiento y sala son obligatorios. La fecha tampoco
+ * puede ser futura, para evitar edades negativas en la lista.
+ *
+ * @param values - Valores actuales del formulario.
+ * @returns Errores por campo; objeto vacío si el formulario es válido.
+ */
+export function validateAddKid(
+  values: AddKidFormValues,
+): FormErrors<AddKidFormValues> {
+  const errors: FormErrors<AddKidFormValues> = {};
+
+  // Paso 1: el nombre es obligatorio y no puede ser solo espacios.
+  if (values.fullName.trim() === '') {
+    errors.fullName = 'Ingresá el nombre completo.';
+  }
+
+  // Paso 2: la fecha es obligatoria, debe ser parseable y no puede ser futura.
+  if (values.birthDate.trim() === '') {
+    errors.birthDate = 'Ingresá la fecha de nacimiento.';
+  } else if (isFutureDate(values.birthDate)) {
+    errors.birthDate = 'Ingresá una fecha válida.';
+  }
+
+  // Paso 3: la sala es obligatoria.
+  if (values.room.trim() === '') {
+    errors.room = 'Seleccioná una sala.';
+  }
+
+  return errors;
+}
+
+/**
  * Indica si el texto tiene formato de email, ignorando espacios laterales.
  *
  * @param email - Texto ingresado por el usuario.
@@ -89,4 +129,25 @@ export function validateActivateAccount(
  */
 function isValidEmail(email: string): boolean {
   return EMAIL_PATTERN.test(email.trim());
+}
+
+/**
+ * Indica si una fecha `yyyy-mm-dd` es posterior a hoy.
+ *
+ * @param value - Fecha en formato `yyyy-mm-dd`.
+ * @returns `true` si la fecha es futura o no se puede parsear.
+ */
+function isFutureDate(value: string): boolean {
+  const [year, month, day] = value.split('-').map(Number);
+
+  if (!year || !month || !day) {
+    return false;
+  }
+
+  // Se construye en hora local para evitar corrimientos de zona horaria.
+  const date = new Date(year, month - 1, day);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return date.getTime() > today.getTime();
 }

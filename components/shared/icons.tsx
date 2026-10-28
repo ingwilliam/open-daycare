@@ -152,6 +152,14 @@ export function ChevronLeftIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function ChevronDownIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} strokeWidth={2.2} {...props}>
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
 export function AlertTriangleIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} strokeWidth={2.2} {...props}>

@@ -9,20 +9,21 @@ import { ChevronRightIcon } from '@/components/shared/icons';
 
 interface KidCardProps {
   kid: Kid;
+  navigable?: boolean;
 }
 
-export function KidCard({ kid }: KidCardProps) {
+const CARD_CLASSES =
+  'kid-card-hover flex items-center gap-[14px] min-w-0 bg-card border border-line rounded-[18px] px-4 py-4 shadow-[0_4px_14px_-12px_rgba(120,90,60,0.5)] transition-[transform,border-color] duration-150 hover:border-[#F2A78E]';
+
+export function KidCard({ kid, navigable = true }: KidCardProps) {
   const hasAllergies = kid.allergies.length > 0;
   const firstAllergy = hasAllergies ? kid.allergies[0] : 'none';
   const badge = ALLERGY_BADGE[firstAllergy];
   const parentsLabel = parentCountLabel(kid.linkedParents);
   const noParents = kid.linkedParents.length === 0;
 
-  return (
-    <Link
-      href={`/kids/${kid.id}`}
-      className="kid-card-hover flex items-center gap-[14px] min-w-0 bg-card border border-line rounded-[18px] px-4 py-4 shadow-[0_4px_14px_-12px_rgba(120,90,60,0.5)] transition-[transform,border-color] duration-150 hover:border-[#F2A78E]"
-    >
+  const content = (
+    <>
       <div
         className="w-12 h-12 rounded-full font-head font-semibold text-[19px] flex items-center justify-center shrink-0"
         style={{ background: kid.avatarBg, color: kid.avatarColor }}
@@ -51,6 +52,17 @@ export function KidCard({ kid }: KidCardProps) {
       ) : (
         <ChevronRightIcon className="flex-none w-[18px] h-[18px] text-[#CBB89F]" />
       )}
+    </>
+  );
+
+  // Los niños creados en memoria todavía no tienen perfil: se muestran sin link.
+  if (!navigable) {
+    return <div className={CARD_CLASSES}>{content}</div>;
+  }
+
+  return (
+    <Link href={`/kids/${kid.id}`} className={CARD_CLASSES}>
+      {content}
     </Link>
   );
 }

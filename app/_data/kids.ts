@@ -1,3 +1,6 @@
+// Salas disponibles en la guardería. El orden define el de las secciones en la lista.
+export const ROOMS = ['Soles', 'Luna'] as const;
+
 // Allergy types with visual labels and colors (Spanish UI, English data).
 export type AllergyType = 'peanut' | 'lactose' | 'gluten' | 'none';
 
